@@ -7,7 +7,7 @@ Hadaeek October, Giza | +201021316155 | momenmamdouh982@gmail.com | [LinkedIn](h
 
 ## Professional Summary
 
-Highly motivated Software Engineer with over 2 years of experience specializing in ASP.NET development and 6 months of expertise as a full stack developer using ASP.NET and Angular. Proven ability to design, develop, and maintain complex applications, ensuring high performance and responsiveness. Adept at collaborating with cross-functional teams to deliver robust software solutions and enhance user experience. Eager to leverage technical skills and industry knowledge to contribute to innovative projects and drive organizational success.
+Highly motivated Software Engineer with over 2 years of experience specializing in ASP.NET development and 6 months of expertise as a full-stack developer using ASP.NET and Angular. Proven ability to design, develop, and maintain complex applications, ensuring high performance and responsiveness. Adept at collaborating with cross-functional teams to deliver robust software solutions and enhance user experience. Eager to leverage technical skills and industry knowledge to contribute to innovative projects and drive organizational success.
 
 ---
 
@@ -15,7 +15,7 @@ Highly motivated Software Engineer with over 2 years of experience specializing 
 
 **Helwan University**  
 Bachelor of Computer Science | V.good | GPA 3.29
-September 2019 – July 2023
+_Sep 2019 – Jul 2023_
 
 ---
 
