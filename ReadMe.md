@@ -14,7 +14,7 @@ Highly motivated Software Engineer with over 2 years of experience specializing 
 ## Education
 
 **Helwan University**  
-Bachelor of Computer Science | V.good | GPA 3.29
+Bachelor of Computer Science | V.good | GPA 3.29<br>
 _Sep 2019 – Jul 2023_
 
 ---
