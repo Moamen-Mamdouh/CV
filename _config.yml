@@ -1,14 +1,19 @@
-title: Moamen Mamdouh  # You can add your name here
+title: "Moamen Mamdouh" # Your Name
 
-logo: 1.png # Use a relative path to logo image 
+logo: "1.png" # Path to the logo image
 
-description: Software Engineer (Full Stack ASP.Net & Angular). # Fix hyphenation 
+description: "Software Engineer (Full Stack ASP.Net & Angular)" # Fix hyphenation
 
 show_downloads: true # Fix spelling
 
-theme: jekyll-theme-minimal 
+theme: jekyll-theme-minimal
 
 plugins:
   - jekyll-seo-tag # Add SEO plugin
 
-email: momenmamdouh982@gmail.com # Allow visitors to contact you
+email: "momenmamdouh982@gmail.com" # Allow visitors to contact you
+
+# Social Links
+social:
+  github: "https://github.com/yourusername"
+  linkedin: "https://linkedin.com/in/yourusername"
