@@ -31,19 +31,19 @@ _Sep 2019 – Jul 2023_
 ## Experience
 
 ### Full Stack ASP.NET DEVELOPER | Rosenfield Health  
-_Dec 2023 - Present . 7 mos_
+_Dec 2023 - Present . 7 mos_<br>
 Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower better workflows for better patient care in Radiology and Oncology.
 
 ### ASP.NET DEVELOPER | Romeya Agency  
-_Jun 2023 - Mar 2024 . 10 mos_
+_Jun 2023 - Mar 2024 . 10 mos_<br>
 Romeya Agency Maximize our levels and fly well to the sky with your business taking your company to Rally races and winning every race.
 
 ### ASP.NET DEVELOPER | Helptk  
-_Sep 2023 - Oct 2023 . 2 mos_
+_Sep 2023 - Oct 2023 . 2 mos_<br>
 Helptk is a software company specializing in developing software and technical solutions. Helptk design and develop customized software templates for all businesses easily and distinctively.
 
 ### ASP.NET DEVELOPER | Project EGY  
-_Oct 2022 - Jul 2023 . 10 mos_
+_Oct 2022 - Jul 2023 . 10 mos_<br>
 ProjectEGY is a startup supporting the digital transformation process by developing websites and mobile apps for clients
 
 ---
