@@ -12,10 +12,6 @@ Highly motivated Software Engineer with over 2 years of experience specializing 
 
 ## Education
 
-**Information Technology Institute**  
-9-month Diploma in Web development & UI/UX | V.good  
-October 2023 – June 2024
-
 **Helwan University**  
 Bachelor of Computer Science | V.good | GPA 3.29
 September 2019 – July 2023
