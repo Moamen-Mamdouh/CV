@@ -30,9 +30,9 @@ _Sep 2019 – Jul 2023_
 
 ## Experience
 
-### Full Stack ASP.NET DEVELOPER | Romeya Agency  
+### Full Stack ASP.NET DEVELOPER | Rosenfield Health  
 _Dec 2023 - Present . 7 mos_
-Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield is on a mission to empower better workflows for better patient care in Radiology and Oncology.
+Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower better workflows for better patient care in Radiology and Oncology.
 
 ### ASP.NET DEVELOPER | Romeya Agency  
 _Jun 2023 - Mar 2024 . 10 mos_
