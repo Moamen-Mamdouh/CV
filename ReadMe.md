@@ -48,11 +48,11 @@ ProjectEGY is a startup supporting the digital transformation process by develop
 
 ---
 
-## Projects
+<!-- ## Projects
 
 
 
----
+--- -->
 
 ## Volunteering
 
