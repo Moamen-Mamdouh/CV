@@ -1,5 +1,6 @@
 title: "Moamen Mamdouh"
 theme:  jekyll-theme-cayman
+is_project_page: false
 sass:
   sass_dir: _sass
   style: compressed # or expanded, depending on your preference
