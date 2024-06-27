@@ -1,7 +1,2 @@
-title: "Moamen Mamdouh CV"
-theme: jekyll-theme-minimal
-plugins:
-  - jekyll-remote-theme
-remote_theme: pages-themes/minimal@v0.2.0
-include:
-  - style.css
+title: "Moamen Mamdouh"
+theme:  minimal-mistakes-jekyll
