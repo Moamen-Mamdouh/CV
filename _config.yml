@@ -1,12 +1,6 @@
 title: "Moamen Mamdouh"
 theme:  jekyll-theme-cayman
 
-defaults:
-  - scope:
-      path: "" # empty string means all files
-    values:
-      is_project_page: false
-
 sass:
   sass_dir: _sass
   style: compressed # or expanded, depending on your preference
