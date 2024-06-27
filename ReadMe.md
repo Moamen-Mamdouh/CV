@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
+
 # Mo'men Mamdouh 
 # Software Engineer |  Full Stack ASP.NET & Angular
 
