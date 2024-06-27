@@ -1,0 +1,41 @@
+# Site settings
+title: "Moamen Mamdouh"
+email: "momenmamdouh982@gmail.com"
+description: "This is the CV of Moamen Mamdouh, a software engineer with experience in ASP.NET and Angular."
+
+# URL settings
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://Moamen-Mamdouh.github.io" # the base hostname & protocol for your site
+
+# Author settings
+author:
+  name: "Moamen Mamdouh"
+  email: "momenmamdouh982@gmail.com"
+
+# Social settings
+social:
+  github: "https://github.com/Moamen-Mamdouh"
+  linkedin: "https://www.linkedin.com/in/mo-men-mamdouh-02070319b"
+
+# Markdown settings
+markdown: kramdown
+highlighter: rouge
+
+# Theme settings (if you're using a Jekyll theme)
+theme: minima
+
+# Plugins (if you're using any Jekyll plugins)
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Include and exclude settings
+include:
+  - _pages
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+
+# Build settings
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
