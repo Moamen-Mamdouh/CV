@@ -1,2 +1,5 @@
 title: "Moamen Mamdouh"
 theme:  jekyll-theme-cayman
+sass:
+  sass_dir: _sass
+  style: compressed # or expanded, depending on your preference
