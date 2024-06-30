@@ -10,9 +10,9 @@ Highly motivated Software Engineer with over 2 years of experience specializing 
 
 ## Education
 
-**Helwan University**  
-Bachelor of Computer Science | V.good | GPA 3.29<br>
-_Sep 2019 – Jul 2023_
+**Faculty of Computers and Artificial Intelligence, Helwan University** _Cairo, Egypt_  
+_Sep 2019 – Jun 2023_
+_Degree:_ Bachelor of Computer Science | V.good | GPA 3.29<br>
 
 ---
 
@@ -27,19 +27,23 @@ _Sep 2019 – Jul 2023_
 
 ## Experience
 
-### Full Stack ASP.NET DEVELOPER | Rosenfield Health  
+### Full Stack ASP.NET DEVELOPER | Rosenfield Health
+
 _Dec 2023 - Present . 7 mos_<br>
 Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower better workflows for better patient care in Radiology and Oncology.
 
-### ASP.NET DEVELOPER | Romeya Agency  
+### ASP.NET DEVELOPER | Romeya Agency
+
 _Jun 2023 - Mar 2024 . 10 mos_<br>
 Romeya Agency Maximize our levels and fly well to the sky with your business taking your company to Rally races and winning every race.
 
-### ASP.NET DEVELOPER | Helptk  
+### ASP.NET DEVELOPER | Helptk
+
 _Sep 2023 - Oct 2023 . 2 mos_<br>
 Helptk is a software company specializing in developing software and technical solutions. Helptk design and develop customized software templates for all businesses easily and distinctively.
 
-### ASP.NET DEVELOPER | Project EGY  
+### ASP.NET DEVELOPER | Project EGY
+
 _Oct 2022 - Jul 2023 . 10 mos_<br>
 ProjectEGY is a startup supporting the digital transformation process by developing websites and mobile apps for clients
 
@@ -53,19 +57,24 @@ ProjectEGY is a startup supporting the digital transformation process by develop
 
 ## Volunteering
 
-### Charity Advisor | 180 Daraga 
+### Charity Advisor | 180 Daraga
+
 _Jan 2024 - Present . 6 mos_
 
-### Charity Coordinator | 180 Daraga 
+### Charity Coordinator | 180 Daraga
+
 _Dec 2022 - Dec 2023 . 1 yr 1 mo_
 
-### Vice President | 180 Daraga 
+### Vice President | 180 Daraga
+
 _Dec 2021 - Dec 2022 . 1 yr 1 mo_
 
-### Vice Head Graphic Design | 180 Daraga 
+### Vice Head Graphic Design | 180 Daraga
+
 _Nov 2020 - Dec 2021 . 1 yr 2 mos_
 
-### Graphic Design Member | 180 Daraga 
+### Graphic Design Member | 180 Daraga
+
 _Dec 2019 - Nov 2020 . 1 yr_
 
 ---
