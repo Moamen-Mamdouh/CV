@@ -11,8 +11,11 @@ Highly motivated Software Engineer with over 2 years of experience specializing 
 ## Education
 
 **Faculty of Computers and Artificial Intelligence, Helwan University** _Cairo, Egypt_  
-_Sep 2019 – Jun 2023_
-_Degree:_ Bachelor of Computer Science | V.good | GPA 3.29<br>
+_Sep 2019 – Jun 2023_<br><br>
+**Degree:** Bachelor of Computer Science<br>
+**Specialization:** Computer Science as a Major and Information Systems as a Minor<br>
+**Graduation Project:** _AI in Justice:_ A Legal multiple-choice question answering system<br>
+**GPA:** 3.29<br>
 
 ---
 
