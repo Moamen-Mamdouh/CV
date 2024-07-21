@@ -51,7 +51,6 @@ _Oct 2022 - Jul 2023 . 10 mos_<br>
 ProjectEGY is a startup supporting the digital transformation process by developing websites and mobile apps for clients
 
 ---
----
 
 ## Projects
 
