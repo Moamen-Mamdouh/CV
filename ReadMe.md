@@ -51,12 +51,24 @@ _Oct 2022 - Jul 2023 . 10 mos_<br>
 ProjectEGY is a startup supporting the digital transformation process by developing websites and mobile apps for clients
 
 ---
+---
 
-<!-- ## Projects
+## Projects
 
+### PriX - Bulk DICOM Anonymiser | ASP.Net & Angular
 
+- PriX is a vendor-neutral tool designed to bulk anonymize medical images. It can automatically anonymize many studies at once, saving time for PACS managers and administrators.
+- The tool ensures that both DICOM headers and pixel data are securely and accurately anonymized. It features an advanced routing engine for smart image routing using multiple filters.
+- The Bulk Anonymiser integrates with PACS, clinical trial servers, and research archives, providing detailed logs for each anonymization step.
+- I am working on background service and using new techniques in parallel processing to get more speed and efficiency.
 
---- -->
+### iCode MDT (Tumor Board) | ASP.Net & Angular
+
+- iCode MDT is a vendor-neutral web-based solution that facilitates the organization and execution of Tumor Board or Multi-Disciplinary Team meetings, greatly enhancing meeting efficiency.
+- This is achieved through the seamless access to patients’ information, images, and clinical information from a single interface using PACS and EHR integration.
+- I am working on things in this project, like Scheduler view, MS Teams Integration, and Meetings recurrence options.
+
+---
 
 ## Volunteering
 
