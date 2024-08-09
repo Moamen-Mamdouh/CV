@@ -30,7 +30,7 @@ _Sep 2019 – Jun 2023_<br>
 
 ## Experience
 
-### Full Stack ASP.NET DEVELOPER | Rosenfield Health
+### Software Engineer | Rosenfield Health
 
 _Dec 2023 - Present . 9 mos_<br>
 Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower better workflows for better patient care in Radiology and Oncology.
