@@ -1,4 +1,4 @@
-Hadaeek October, Giza | +201021316155 | [Gmail](mailto:momenmamdouh982@gmail.com) | [LinkedIn](https://www.linkedin.com/in/mo-men-mamdouh-02070319b)
+Hadaeek October, Giza | +201021316155 | [Gmail](mailto:momenmamdouh982@gmail.com) | [LinkedIn](https://www.linkedin.com/in/mo-men-mamdouh-02070319b) | [GitHub](https://github.com/Moamen-Mamdouh)
 
 ---
 
@@ -32,7 +32,7 @@ _Sep 2019 – Jun 2023_<br>
 
 ### Software Engineer | Rosenfield Health
 
-_Dec 2023 - Present . 9 mos_<br>
+_Dec 2023 - Present . 10 mos_<br>
 Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower better workflows for better patient care in Radiology and Oncology.
 
 ### ASP.NET DEVELOPER | Romeya Agency
@@ -73,7 +73,7 @@ ProjectEGY is a startup supporting the digital transformation process by develop
 
 ### Charity Advisor | 180 Daraga
 
-_Jan 2024 - Present . 6 mos_
+_Jan 2024 - Present . 9 mos_
 
 ### Charity Coordinator | 180 Daraga
 
