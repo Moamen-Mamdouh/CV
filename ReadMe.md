@@ -4,7 +4,7 @@ Hadaeek October, Giza | +201021316155 | [momenmamdouh982@gmail.com](mailto:momen
 
 ## Professional Summary
 
-Highly motivated Software Engineer with over 2 years of experience specializing in ASP.NET development and 9 months of expertise as a full-stack developer using ASP.NET and Angular. Proven ability to design, develop, and maintain complex applications, ensuring high performance and responsiveness. Adept at collaborating with cross-functional teams to deliver robust software solutions and enhance user experience. Eager to leverage technical skills and industry knowledge to contribute to innovative projects and drive organizational success.
+Highly motivated Software Engineer with over 3 years of experience specializing in ASP.NET development and 1 year of expertise as a full-stack developer using ASP.NET and Angular. Proven ability to design, develop, and maintain complex applications, ensuring high performance and responsiveness. Adept at collaborating with cross-functional teams to deliver robust software solutions and enhance user experience. Eager to leverage technical skills and industry knowledge to contribute to innovative projects and drive organizational success.
 
 ---
 
@@ -32,7 +32,7 @@ _Sep 2019 – Jun 2023_<br>
 
 ### Software Engineer | Rosenfield Health
 
-_Dec 2023 - Present . 10 mos_<br>
+_Dec 2023 - Present . 11 mos_<br>
 Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower better workflows for better patient care in Radiology and Oncology.
 
 ### ASP.NET DEVELOPER | Romeya Agency
@@ -56,8 +56,8 @@ ProjectEGY is a startup supporting the digital transformation process by develop
 
 ### PriX - Bulk DICOM Anonymiser | ASP.Net & Angular
 
-- PriX is a vendor-neutral tool designed to bulk anonymize medical images. It can automatically anonymize many studies at once, saving time for PACS managers and administrators.
-- The tool ensures that both DICOM headers and pixel data are securely and accurately anonymized. It features an advanced routing engine for smart image routing using multiple filters.
+- PriX is a vendor-neutral tool designed to anonymize medical images in bulk. It can automatically anonymize many studies simultaneously, saving PACS managers and administrators time.
+- The tool ensures that DICOM headers and pixel data are securely and accurately anonymized. It features an advanced routing engine for smart image routing using multiple filters.
 - The Bulk Anonymiser integrates with PACS, clinical trial servers, and research archives, providing detailed logs for each anonymization step.
 - I am working on background service and using new techniques in parallel processing to get more speed and efficiency.
 
