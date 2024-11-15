@@ -51,9 +51,9 @@
     document.getElementById('download-pdf').addEventListener('click', () => {
       const element = document.body; // Capture the whole body
       const options = {
-        margin: 0.5, // Reduce margins to fit more content
+        margin: 0, // Reduce margins to fit more content
         filename: 'Moamen Mamdouh.pdf',
-        html2canvas: { scale: 1.5 }, // Increase scale to shrink content size
+        html2canvas: { scale: 0.5 }, // Increase scale to shrink content size
         jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } // Use A4 size
       };
       html2pdf().set(options).from(element).save();
