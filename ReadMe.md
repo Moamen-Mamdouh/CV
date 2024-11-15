@@ -30,22 +30,22 @@ _Sep 2019 – Jun 2023_<br>
 
 ## Experience
 
-### Software Engineer | Rosenfield Health
+### Software Engineer | [Rosenfield Health](https://rosenfieldhealth.com/)
 
-_Dec 2023 - Present . 11 mos_<br>
+_Dec 2023 - Present . 1 yr_<br>
 Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower better workflows for better patient care in Radiology and Oncology.
 
-### ASP.NET DEVELOPER | Romeya Agency
+### ASP.NET DEVELOPER | [Romeya Agency](https://romeya.com)
 
 _Jun 2023 - Mar 2024 . 10 mos_<br>
 Romeya Agency Maximize our levels and fly well to the sky with your business taking your company to Rally races and winning every race.
 
-### ASP.NET DEVELOPER | Helptk
+### ASP.NET DEVELOPER | [HelpTK](https://helptk.com)
 
 _Sep 2023 - Oct 2023 . 2 mos_<br>
 Helptk is a software company specializing in developing software and technical solutions. Helptk design and develop customized software templates for all businesses easily and distinctively.
 
-### ASP.NET DEVELOPER | Project EGY
+### ASP.NET DEVELOPER | [Project EGY](https://project-eg.com)
 
 _Oct 2022 - Jul 2023 . 10 mos_<br>
 ProjectEGY is a startup supporting the digital transformation process by developing websites and mobile apps for clients
@@ -54,18 +54,52 @@ ProjectEGY is a startup supporting the digital transformation process by develop
 
 ## Projects
 
-### PriX - Bulk DICOM Anonymiser | ASP.Net & Angular
+### [PriX - Bulk DICOM Anonymiser](https://rosenfieldhealth.com/PRIX/) | ASP.Net & Angular
 
 - PriX is a vendor-neutral tool designed to anonymize medical images in bulk. It can automatically anonymize many studies simultaneously, saving PACS managers and administrators time.
 - The tool ensures that DICOM headers and pixel data are securely and accurately anonymized. It features an advanced routing engine for smart image routing using multiple filters.
 - The Bulk Anonymiser integrates with PACS, clinical trial servers, and research archives, providing detailed logs for each anonymization step.
-- I am working on background service and using new techniques in parallel processing to get more speed and efficiency.
+- Using background service and using new techniques in parallel processing to get more speed and efficiency.
 
-### iCode MDT (Tumor Board) | ASP.Net & Angular
+### [iCode MDT (Tumor Board)](https://rosenfieldhealth.com/icode-mdt/) | ASP.Net & Angular
 
 - iCode MDT is a vendor-neutral web-based solution that facilitates the organization and execution of Tumor Board or Multi-Disciplinary Team meetings, greatly enhancing meeting efficiency.
 - This is achieved through the seamless access to patients’ information, images, and clinical information from a single interface using PACS and EHR integration.
-- I am working on things in this project, like Scheduler view, MS Teams Integration, and Meetings recurrence options.
+- I am working on things in this project, like the Scheduler view, MS Teams Integration, and Meeting recurrence options.
+
+### [Milet Consulting Architects Office System](https://play.google.com/store/apps/details?id=com.milet.millet) | ASP.Net
+
+- This project management system is designed so an architectural office can handle all ongoing projects seamlessly.
+- Features include:
+  - File Management: Organizes project files, including architectural drawings and related documents.
+  - Billing Tracking: Manages customer payments with automated reminders for due dates.
+  - Project Status Updates: Tracks and reports project progress to keep clients informed.
+  - Notifications: Sends alerts to clients about upcoming bills and project updates.
+- The system enhances project organization, improves billing efficiency, and fosters better communication with clients, driving satisfaction and productivity.
+
+### [ELO E-Commerce System](https://elo-link.com) | ASP.Net
+
+- ELO is a cutting-edge e-commerce platform designed for the industrial sector in Qatar, focusing on equipment and machinery rentals.
+- It simplifies the rental process by offering two rental options: instant rentals for immediate needs and quotation requests for customized solutions.
+- ELO’s user-friendly interface and follow-up system ensure a smooth experience from selection to return, streamlining operations and enhancing flexibility.
+- Whether users need on-demand equipment or prefer negotiated terms, ELO provides an efficient, reliable solution tailored to industrial needs.
+
+### [APS Educational System](https://apsdashboard.runasp.net/) | ASP.Net
+
+- APS is an advanced online educational platform that allows students to purchase and access video-based courses from diverse teachers.
+- It features role-specific dashboards for teachers, teaching assistants, administrators, and parents to ensure efficient management and engagement.
+- Key functionalities include:
+  - Teachers: Upload content, track student progress, and interact with learners.
+  - Administrators: Manage users, approve courses and access analytics.
+  - Parents: Monitor student performance and course participation through a dedicated dashboard.
+- The platform supports video streaming, engagement tools, and a secure payment system, creating a seamless and interactive online learning experience.
+
+### Cabeer Travel and Transportation Services System | ASP.Net
+
+- Cabeer is a travel and transportation services platform featuring a comprehensive admin dashboard with role-based access control.
+- The system supports two types of trips: individual trips for personalized travel needs and shared trips at discounted rates for cost efficiency.
+- Admins can manage trip schedules, user profiles, and pricing, while sub-roles have restricted access tailored to their specific functions.
+- The platform enhances travel booking management, streamlines operations, and delivers an improved user experience.
 
 ---
 
@@ -73,7 +107,7 @@ ProjectEGY is a startup supporting the digital transformation process by develop
 
 ### Charity Advisor | 180 Daraga
 
-_Jan 2024 - Present . 9 mos_
+_Jan 2024 - Present . 11 mos_
 
 ### Charity Coordinator | 180 Daraga
 
