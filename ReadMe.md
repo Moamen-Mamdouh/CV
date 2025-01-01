@@ -32,7 +32,7 @@ _Sep 2019 – Jun 2023_<br>
 
 ### Software Engineer | [Rosenfield Health](https://rosenfieldhealth.com/)
 
-_Dec 2023 - Present . 1 yr_<br>
+_Dec 2023 - Present . 1 yr 2 mos_<br>
 Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower better workflows for better patient care in Radiology and Oncology.
 
 ### ASP.NET DEVELOPER | [Romeya Agency](https://romeya.com)
@@ -54,18 +54,22 @@ ProjectEGY is a startup supporting the digital transformation process by develop
 
 ## Projects
 
+### [iCode Teaching Files](https://rosenfieldhealth.com/icode-teaching-files/) | ASP.Net & Angular
+
+- iCode Teaching Files is an enterprise vendor neutral web teaching files solution that helps radiologists archiving their interesting studies and build imaging library according to the ACR standards (Body Part & Type of Disease).
+- It archives interesting studies on a separate server with a separate database so that users can keep teaching studies safe when the PACS vendor is changed.
+- iCode has a rich set of features that fulfills all users' needs to do their educational activities in less time & with less effort.
+
 ### [PriX - Bulk DICOM Anonymiser](https://rosenfieldhealth.com/PRIX/) | ASP.Net & Angular
 
 - PriX is a vendor-neutral tool designed to anonymize medical images in bulk. It can automatically anonymize many studies simultaneously, saving PACS managers and administrators time.
 - The tool ensures that DICOM headers and pixel data are securely and accurately anonymized. It features an advanced routing engine for smart image routing using multiple filters.
 - The Bulk Anonymiser integrates with PACS, clinical trial servers, and research archives, providing detailed logs for each anonymization step.
-- Using background service and using new techniques in parallel processing to get more speed and efficiency.
 
 ### [iCode MDT (Tumor Board)](https://rosenfieldhealth.com/icode-mdt/) | ASP.Net & Angular
 
 - iCode MDT is a vendor-neutral web-based solution that facilitates the organization and execution of Tumor Board or Multi-Disciplinary Team meetings, greatly enhancing meeting efficiency.
 - This is achieved through the seamless access to patients’ information, images, and clinical information from a single interface using PACS and EHR integration.
-- I am working on things in this project, like the Scheduler view, MS Teams Integration, and Meeting recurrence options.
 
 ### [Milet Consulting Architects Office System](https://play.google.com/store/apps/details?id=com.milet.millet) | ASP.Net
 
@@ -75,12 +79,12 @@ ProjectEGY is a startup supporting the digital transformation process by develop
   - Billing Tracking: Manages customer payments with automated reminders for due dates.
   - Project Status Updates: Tracks and reports project progress to keep clients informed.
   - Notifications: Sends alerts to clients about upcoming bills and project updates.
-- The system enhances project organization, improves billing efficiency, and fosters better communication with clients, driving satisfaction and productivity.
+- The system enhances project organization, improves billing efficiency, and fosters better client communication, driving satisfaction and productivity.
 
 ### [ELO E-Commerce System](https://elo-link.com) | ASP.Net
 
 - ELO is a cutting-edge e-commerce platform designed for the industrial sector in Qatar, focusing on equipment and machinery rentals.
-- It simplifies the rental process by offering two rental options: instant rentals for immediate needs and quotation requests for customized solutions.
+- It simplifies the rental process by offering two options: instant rentals for immediate needs and quotation requests for customized solutions.
 - ELO’s user-friendly interface and follow-up system ensure a smooth experience from selection to return, streamlining operations and enhancing flexibility.
 - Whether users need on-demand equipment or prefer negotiated terms, ELO provides an efficient, reliable solution tailored to industrial needs.
 
@@ -90,7 +94,7 @@ ProjectEGY is a startup supporting the digital transformation process by develop
 - It features role-specific dashboards for teachers, teaching assistants, administrators, and parents to ensure efficient management and engagement.
 - Key functionalities include:
   - Teachers: Upload content, track student progress, and interact with learners.
-  - Administrators: Manage users, approve courses and access analytics.
+  - Administrators: Manage users, approve courses, and access analytics.
   - Parents: Monitor student performance and course participation through a dedicated dashboard.
 - The platform supports video streaming, engagement tools, and a secure payment system, creating a seamless and interactive online learning experience.
 
