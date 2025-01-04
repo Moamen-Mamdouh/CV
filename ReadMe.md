@@ -4,7 +4,7 @@ Hadaeek October, Giza | +201021316155 | [momenmamdouh982@gmail.com](mailto:momen
 
 ## Professional Summary
 
-Highly motivated Software Engineer with over 3 years of experience specializing in ASP.NET development and 1 year of expertise as a full-stack developer using ASP.NET and Angular. Proven ability to design, develop, and maintain complex applications, ensuring high performance and responsiveness. Adept at collaborating with cross-functional teams to deliver robust software solutions and enhance user experience. Eager to leverage technical skills and industry knowledge to contribute to innovative projects and drive organizational success.
+Highly motivated Software Engineer with over 3 years of experience in ASP.NET development and 1 year of full-stack development experience using ASP.NET and Angular. Proven ability to design, develop, and maintain complex applications, ensuring high performance and responsiveness. Adept at collaborating with cross-functional teams to deliver robust software solutions and enhance user experience. Eager to leverage technical skills and industry knowledge to contribute to innovative projects and drive organizational success. Additionally, a strong competitive programming background with two participations in ECPC, securing 11th place in one of the contests.
 
 ---
 
@@ -14,17 +14,19 @@ Highly motivated Software Engineer with over 3 years of experience specializing 
 _Sep 2019 – Jun 2023_<br>
 **Degree:** Bachelor of Computer Science<br>
 **Specialization:** Computer Science as a Major and Information Systems as a Minor<br>
-**Graduation Project:** [AI in Justice] A Legal multiple-choice question answering system<br>
-**GPA:** 3.29<br>
+**Graduation Project:** [AI in Justice] A Legal multiple-choice question answering system [A+]<br>
 
 ---
 
 ## Technical Skills
 
-- **Languages:** C/C++, SQL (PostgreSQL, Ms SQL), TypeScript, C#
-- **Frameworks:** ASP.NET, Angular.js, Entity Framework Core
-- **DevOps and API Tools:** IIS, Git, Docker, Azure DevOps, Postman
-- **Others:** Agile, SOLID Principles, Data Structure, Design Patterns, OPP, Adobe Photoshop, Illustrator, Advanced C#, SignalR, Background processing, Deployment on servers like (Azure, Smarter, Hostinger, GoDaddy), Clean architecture
+- **Languages:** C/C++, SQL (PostgreSQL, MS SQL), TypeScript, C#
+- **Frameworks & Libraries:** ASP.NET, Entity Framework Core, Angular.js, NgRx, RxJs, NX, SignalR, TPL Dataflows, Nlog
+- **Architecture & Design Patterns:** Modular Architecture, Clean Architecture, CQRS, SOLID Principles, OOP, Design Patterns
+- **Databases & Data Management:** PostgreSQL, MS SQL, Dapper (ORM), Entity Framework Core
+- **DevOps & Tools:** IIS, Git, Docker, Azure DevOps, Postman
+- **Web & Server Technologies:** Deployment on Azure, Smarter, Hostinger, GoDaddy, SignalR for real-time communication
+- **Other Skills:** Agile Methodology, Adobe Photoshop & Illustrator
 
 ---
 
@@ -32,78 +34,59 @@ _Sep 2019 – Jun 2023_<br>
 
 ### Software Engineer | [Rosenfield Health](https://rosenfieldhealth.com/)
 
-_Dec 2023 - Present . 1 yr 2 mos_<br>
-Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower better workflows for better patient care in Radiology and Oncology.
+_Dec 2023 - Dec 2024_
+Rosenfield Health is a medical technology company focusing on medical imaging informatics and workflow automation. Rosenfield aims to empower workflows for better patient care in radiology and oncology.
 
 ### ASP.NET DEVELOPER | [Romeya Agency](https://romeya.com)
 
-_Jun 2023 - Mar 2024 . 10 mos_<br>
+_Jun 2023 - Mar 2024_
 Romeya Agency Maximize our levels and fly well to the sky with your business taking your company to Rally races and winning every race.
 
 ### ASP.NET DEVELOPER | [HelpTK](https://helptk.com)
 
-_Sep 2023 - Oct 2023 . 2 mos_<br>
+_Jul 2023 - Oct 2023_
 Helptk is a software company specializing in developing software and technical solutions. Helptk design and develop customized software templates for all businesses easily and distinctively.
 
 ### ASP.NET DEVELOPER | [Project EGY](https://project-eg.com)
 
-_Oct 2022 - Jul 2023 . 10 mos_<br>
+_Oct 2022 - Jul 2023_
 ProjectEGY is a startup supporting the digital transformation process by developing websites and mobile apps for clients
 
 ---
 
-## Projects
+# Projects
 
 ### [iCode Teaching Files](https://rosenfieldhealth.com/icode-teaching-files/) | ASP.Net & Angular
-
-- iCode Teaching Files is an enterprise vendor neutral web teaching files solution that helps radiologists archiving their interesting studies and build imaging library according to the ACR standards (Body Part & Type of Disease).
-- It archives interesting studies on a separate server with a separate database so that users can keep teaching studies safe when the PACS vendor is changed.
-- iCode has a rich set of features that fulfills all users' needs to do their educational activities in less time & with less effort.
+- Backend development using .NET with modular architecture, Clean Architecture, Dapper, and Postgres.
+- Implemented CQRS, repository pattern, MediatR, chain of responsibilities, strategy, and factory patterns.
+- Managed logging with Nlog, and used background services with parallel processing and TPL Dataflows.
+- Frontend development using Angular, NgRx, RxJs, and NX to manage state and improve performance.
 
 ### [PriX - Bulk DICOM Anonymiser](https://rosenfieldhealth.com/PRIX/) | ASP.Net & Angular
-
-- PriX is a vendor-neutral tool designed to anonymize medical images in bulk. It can automatically anonymize many studies simultaneously, saving PACS managers and administrators time.
-- The tool ensures that DICOM headers and pixel data are securely and accurately anonymized. It features an advanced routing engine for smart image routing using multiple filters.
-- The Bulk Anonymiser integrates with PACS, clinical trial servers, and research archives, providing detailed logs for each anonymization step.
+- Worked on the admin area with .NET and Angular, focusing on background services and parallel processing with SemaphoreSlim.
+- Implemented changes to DICOM files for anonymization, including header modification and movement.
+- Used Dapper and Postgres for database management and logging with Nlog.
 
 ### [iCode MDT (Tumor Board)](https://rosenfieldhealth.com/icode-mdt/) | ASP.Net & Angular
-
-- iCode MDT is a vendor-neutral web-based solution that facilitates the organization and execution of Tumor Board or Multi-Disciplinary Team meetings, greatly enhancing meeting efficiency.
-- This is achieved through the seamless access to patients’ information, images, and clinical information from a single interface using PACS and EHR integration.
+- Contributed to both user and admin areas using .NET and Angular.
+- Focused on scheduling and handling meetings using a scheduler view, supporting repeated meetings.
+- Managed real-time communication with SignalR and used Postgres with Dapper for database management.
+- Applied Nlog for comprehensive logging of events.
 
 ### [Milet Consulting Architects Office System](https://play.google.com/store/apps/details?id=com.milet.millet) | ASP.Net
-
-- This project management system is designed so an architectural office can handle all ongoing projects seamlessly.
-- Features include:
-  - File Management: Organizes project files, including architectural drawings and related documents.
-  - Billing Tracking: Manages customer payments with automated reminders for due dates.
-  - Project Status Updates: Tracks and reports project progress to keep clients informed.
-  - Notifications: Sends alerts to clients about upcoming bills and project updates.
-- The system enhances project organization, improves billing efficiency, and fosters better client communication, driving satisfaction and productivity.
+- Backend development using Entity Framework.
+- Developed features for managing engineering project reports and file management.
 
 ### [ELO E-Commerce System](https://elo-link.com) | ASP.Net
-
-- ELO is a cutting-edge e-commerce platform designed for the industrial sector in Qatar, focusing on equipment and machinery rentals.
-- It simplifies the rental process by offering two options: instant rentals for immediate needs and quotation requests for customized solutions.
-- ELO’s user-friendly interface and follow-up system ensure a smooth experience from selection to return, streamlining operations and enhancing flexibility.
-- Whether users need on-demand equipment or prefer negotiated terms, ELO provides an efficient, reliable solution tailored to industrial needs.
+- Backend development focused on integrating with various systems using Entity Framework.
+- Handled complex data operations to support equipment and machinery rental services.
 
 ### [APS Educational System](https://apsdashboard.runasp.net/) | ASP.Net
-
-- APS is an advanced online educational platform that allows students to purchase and access video-based courses from diverse teachers.
-- It features role-specific dashboards for teachers, teaching assistants, administrators, and parents to ensure efficient management and engagement.
-- Key functionalities include:
-  - Teachers: Upload content, track student progress, and interact with learners.
-  - Administrators: Manage users, approve courses, and access analytics.
-  - Parents: Monitor student performance and course participation through a dedicated dashboard.
-- The platform supports video streaming, engagement tools, and a secure payment system, creating a seamless and interactive online learning experience.
+- Backend development with Entity Framework for managing user data, course access, and video streaming.
 
 ### Cabeer Travel and Transportation Services System | ASP.Net
+- Backend development using Entity Framework for managing trip scheduling, user profiles, and pricing.
 
-- Cabeer is a travel and transportation services platform featuring a comprehensive admin dashboard with role-based access control.
-- The system supports two types of trips: individual trips for personalized travel needs and shared trips at discounted rates for cost efficiency.
-- Admins can manage trip schedules, user profiles, and pricing, while sub-roles have restricted access tailored to their specific functions.
-- The platform enhances travel booking management, streamlines operations, and delivers an improved user experience.
 
 ---
 
@@ -111,23 +94,23 @@ ProjectEGY is a startup supporting the digital transformation process by develop
 
 ### Charity Advisor | 180 Daraga
 
-_Jan 2024 - Present . 11 mos_
+_Jan 2024 - Present_
 
 ### Charity Coordinator | 180 Daraga
 
-_Dec 2022 - Dec 2023 . 1 yr 1 mo_
+_Dec 2022 - Dec 2023_
 
 ### Vice President | 180 Daraga
 
-_Dec 2021 - Dec 2022 . 1 yr 1 mo_
+_Dec 2021 - Dec 2022_
 
 ### Vice Head Graphic Design | 180 Daraga
 
-_Nov 2020 - Dec 2021 . 1 yr 2 mos_
+_Nov 2020 - Dec 2021_
 
 ### Graphic Design Member | 180 Daraga
 
-_Dec 2019 - Nov 2020 . 1 yr_
+_Dec 2019 - Nov 2020_
 
 ---
 
