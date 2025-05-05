@@ -1,46 +1,1083 @@
-<!DOCTYPE html>
-<html lang="{{ site.lang | default: " en-US" }}">
 
-<head>
-  <meta charset="UTF-8">
+           <!DOCTYPE html>
+            <html>
+                <head>
+                    <title>PDF to HTML by PDF.ai</title>
+                    <style>
+  body {
+    margin: 0;
+  }
+  /* Copyright 2014 Mozilla Foundation
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *     http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   */
+  
+   .textLayer {
+    position: absolute;
+    text-align: initial;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    opacity: 1;
+    line-height: 1;
+    -webkit-text-size-adjust: none;
+       -moz-text-size-adjust: none;
+            text-size-adjust: none;
+    forced-color-adjust: none;
+    transform-origin: 0 0;
+    z-index: 2;
+  }
+  
+  .textLayer span,
+  .textLayer br {
+    color: black;
+    position: absolute;
+    white-space: pre;
+    cursor: text;
+    transform-origin: 0% 0%;
+  }
+  
+  /* Only necessary in Google Chrome, see issue 14205, and most unfortunately
+   * the problem doesn't show up in "text" reference tests. */
+  .textLayer span.markedContent {
+    top: 0;
+    height: 0;
+  }
+  
+  .textLayer .highlight {
+    margin: -1px;
+    padding: 1px;
+    background-color: rgba(180, 0, 170, 1);
+    border-radius: 4px;
+  }
+  
+  .textLayer .highlight.appended {
+    position: initial;
+  }
+  
+  .textLayer .highlight.begin {
+    border-radius: 4px 0 0 4px;
+  }
+  
+  .textLayer .highlight.end {
+    border-radius: 0 4px 4px 0;
+  }
+  
+  .textLayer .highlight.middle {
+    border-radius: 0;
+  }
+  
+  .textLayer .highlight.selected {
+    background-color: rgba(0, 100, 0, 1);
+  }
+  
+  .textLayer ::-moz-selection {
+    background: #0000ff26;
+  }
+  
+  .textLayer ::selection {
+    background: #0000ff26;
+  }
+  
+  /* Avoids https://github.com/mozilla/pdf.js/issues/13840 in Chrome */
+  .textLayer br::-moz-selection {
+    background: transparent;
+  }
+  .textLayer br::selection {
+    background: transparent;
+  }
+  
+  .textLayer .endOfContent {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    cursor: default;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
+  }
+  
+  .textLayer .endOfContent.active {
+    top: 0;
+  }
+  
+  
+  :root {
+    --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+    --input-focus-border-color: Highlight;
+    --input-focus-outline: 1px solid Canvas;
+    --input-unfocused-border-color: transparent;
+    --input-disabled-border-color: transparent;
+    --input-hover-border-color: black;
+  }
+  
+  @media (forced-colors: active) {
+    :root {
+      --input-focus-border-color: CanvasText;
+      --input-unfocused-border-color: ActiveText;
+      --input-disabled-border-color: GrayText;
+      --input-hover-border-color: Highlight;
+    }
+    .annotationLayer .textWidgetAnnotation input:required,
+    .annotationLayer .textWidgetAnnotation textarea:required,
+    .annotationLayer .choiceWidgetAnnotation select:required,
+    .annotationLayer .buttonWidgetAnnotation.checkBox input:required,
+    .annotationLayer .buttonWidgetAnnotation.radioButton input:required {
+      outline: 1.5px solid selectedItem;
+    }
+  }
+  
+  .annotationLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    transform-origin: 0 0;
+    z-index: 3;
+  }
+  
+  .annotationLayer section {
+    position: absolute;
+    text-align: initial;
+    pointer-events: auto;
+    box-sizing: border-box;
+    transform-origin: 0 0;
+  }
+  
+  .annotationLayer .linkAnnotation > a,
+  .annotationLayer .buttonWidgetAnnotation.pushButton > a {
+    position: absolute;
+    font-size: 1em;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.pushButton > canvas {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .annotationLayer .linkAnnotation > a:hover,
+  .annotationLayer .buttonWidgetAnnotation.pushButton > a:hover {
+    opacity: 0.2;
+    background: rgba(255, 255, 0, 1);
+    box-shadow: 0 2px 10px rgba(255, 255, 0, 1);
+  }
+  
+  .annotationLayer .textAnnotation img {
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .annotationLayer .textWidgetAnnotation input,
+  .annotationLayer .textWidgetAnnotation textarea,
+  .annotationLayer .choiceWidgetAnnotation select,
+  .annotationLayer .buttonWidgetAnnotation.checkBox input,
+  .annotationLayer .buttonWidgetAnnotation.radioButton input {
+    background-image: var(--annotation-unfocused-field-background);
+    border: 2px solid var(--input-unfocused-border-color);
+    box-sizing: border-box;
+    font: calc(9px * var(--scale-factor)) sans-serif;
+    height: 100%;
+    margin: 0;
+    vertical-align: top;
+    width: 100%;
+  }
+  
+  .annotationLayer .textWidgetAnnotation input:required,
+  .annotationLayer .textWidgetAnnotation textarea:required,
+  .annotationLayer .choiceWidgetAnnotation select:required,
+  .annotationLayer .buttonWidgetAnnotation.checkBox input:required,
+  .annotationLayer .buttonWidgetAnnotation.radioButton input:required {
+    outline: 1.5px solid red;
+  }
+  
+  .annotationLayer .choiceWidgetAnnotation select option {
+    padding: 0;
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.radioButton input {
+    border-radius: 50%;
+  }
+  
+  .annotationLayer .textWidgetAnnotation textarea {
+    resize: none;
+  }
+  
+  .annotationLayer .textWidgetAnnotation input[disabled],
+  .annotationLayer .textWidgetAnnotation textarea[disabled],
+  .annotationLayer .choiceWidgetAnnotation select[disabled],
+  .annotationLayer .buttonWidgetAnnotation.checkBox input[disabled],
+  .annotationLayer .buttonWidgetAnnotation.radioButton input[disabled] {
+    background: none;
+    border: 2px solid var(--input-disabled-border-color);
+    cursor: not-allowed;
+  }
+  
+  .annotationLayer .textWidgetAnnotation input:hover,
+  .annotationLayer .textWidgetAnnotation textarea:hover,
+  .annotationLayer .choiceWidgetAnnotation select:hover,
+  .annotationLayer .buttonWidgetAnnotation.checkBox input:hover,
+  .annotationLayer .buttonWidgetAnnotation.radioButton input:hover {
+    border: 2px solid var(--input-hover-border-color);
+  }
+  .annotationLayer .textWidgetAnnotation input:hover,
+  .annotationLayer .textWidgetAnnotation textarea:hover,
+  .annotationLayer .choiceWidgetAnnotation select:hover,
+  .annotationLayer .buttonWidgetAnnotation.checkBox input:hover {
+    border-radius: 2px;
+  }
+  
+  .annotationLayer .textWidgetAnnotation input:focus,
+  .annotationLayer .textWidgetAnnotation textarea:focus,
+  .annotationLayer .choiceWidgetAnnotation select:focus {
+    background: none;
+    border: 2px solid var(--input-focus-border-color);
+    border-radius: 2px;
+    outline: var(--input-focus-outline);
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.checkBox :focus,
+  .annotationLayer .buttonWidgetAnnotation.radioButton :focus {
+    background-image: none;
+    background-color: transparent;
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.checkBox :focus {
+    border: 2px solid var(--input-focus-border-color);
+    border-radius: 2px;
+    outline: var(--input-focus-outline);
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.radioButton :focus {
+    border: 2px solid var(--input-focus-border-color);
+    outline: var(--input-focus-outline);
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.checkBox input:checked:before,
+  .annotationLayer .buttonWidgetAnnotation.checkBox input:checked:after,
+  .annotationLayer .buttonWidgetAnnotation.radioButton input:checked:before {
+    background-color: CanvasText;
+    content: "";
+    display: block;
+    position: absolute;
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.checkBox input:checked:before,
+  .annotationLayer .buttonWidgetAnnotation.checkBox input:checked:after {
+    height: 80%;
+    left: 45%;
+    width: 1px;
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.checkBox input:checked:before {
+    transform: rotate(45deg);
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.checkBox input:checked:after {
+    transform: rotate(-45deg);
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.radioButton input:checked:before {
+    border-radius: 50%;
+    height: 50%;
+    left: 30%;
+    top: 20%;
+    width: 50%;
+  }
+  
+  .annotationLayer .textWidgetAnnotation input.comb {
+    font-family: monospace;
+    padding-left: 2px;
+    padding-right: 0;
+  }
+  
+  .annotationLayer .textWidgetAnnotation input.comb:focus {
+    /*
+     * Letter spacing is placed on the right side of each character. Hence, the
+     * letter spacing of the last character may be placed outside the visible
+     * area, causing horizontal scrolling. We avoid this by extending the width
+     * when the element has focus and revert this when it loses focus.
+     */
+    width: 103%;
+  }
+  
+  .annotationLayer .buttonWidgetAnnotation.checkBox input,
+  .annotationLayer .buttonWidgetAnnotation.radioButton input {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+  }
+  
+  .annotationLayer .popupTriggerArea {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .annotationLayer .popupWrapper {
+    position: absolute;
+    font-size: calc(9px * var(--scale-factor));
+    width: 100%;
+    min-width: calc(180px * var(--scale-factor));
+    pointer-events: none;
+  }
+  
+  .annotationLayer .popup {
+    position: absolute;
+    max-width: calc(180px * var(--scale-factor));
+    background-color: rgba(255, 255, 153, 1);
+    box-shadow: 0 calc(2px * var(--scale-factor)) calc(5px * var(--scale-factor))
+      rgba(136, 136, 136, 1);
+    border-radius: calc(2px * var(--scale-factor));
+    padding: calc(6px * var(--scale-factor));
+    margin-left: calc(5px * var(--scale-factor));
+    cursor: pointer;
+    font: message-box;
+    white-space: normal;
+    word-wrap: break-word;
+    pointer-events: auto;
+  }
+  
+  .annotationLayer .popup > * {
+    font-size: calc(9px * var(--scale-factor));
+  }
+  
+  .annotationLayer .popup h1 {
+    display: inline-block;
+  }
+  
+  .annotationLayer .popupDate {
+    display: inline-block;
+    margin-left: calc(5px * var(--scale-factor));
+  }
+  
+  .annotationLayer .popupContent {
+    border-top: 1px solid rgba(51, 51, 51, 1);
+    margin-top: calc(2px * var(--scale-factor));
+    padding-top: calc(2px * var(--scale-factor));
+  }
+  
+  .annotationLayer .richText > * {
+    white-space: pre-wrap;
+    font-size: calc(9px * var(--scale-factor));
+  }
+  
+  .annotationLayer .highlightAnnotation,
+  .annotationLayer .underlineAnnotation,
+  .annotationLayer .squigglyAnnotation,
+  .annotationLayer .strikeoutAnnotation,
+  .annotationLayer .freeTextAnnotation,
+  .annotationLayer .lineAnnotation svg line,
+  .annotationLayer .squareAnnotation svg rect,
+  .annotationLayer .circleAnnotation svg ellipse,
+  .annotationLayer .polylineAnnotation svg polyline,
+  .annotationLayer .polygonAnnotation svg polygon,
+  .annotationLayer .caretAnnotation,
+  .annotationLayer .inkAnnotation svg polyline,
+  .annotationLayer .stampAnnotation,
+  .annotationLayer .fileAttachmentAnnotation {
+    cursor: pointer;
+  }
+  
+  .annotationLayer section svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .annotationLayer .annotationTextContent {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    color: transparent;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
+    pointer-events: none;
+  }
+  
+  .annotationLayer .annotationTextContent span {
+    width: 100%;
+    display: inline-block;
+  }
+  
+  
+  :root {
+    --xfa-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
+    --xfa-focus-outline: auto;
+  }
+  
+  @media (forced-colors: active) {
+    :root {
+      --xfa-focus-outline: 2px solid CanvasText;
+    }
+    .xfaLayer *:required {
+      outline: 1.5px solid selectedItem;
+    }
+  }
+  
+  .xfaLayer {
+    background-color: transparent;
+  }
+  
+  .xfaLayer .highlight {
+    margin: -1px;
+    padding: 1px;
+    background-color: rgba(239, 203, 237, 1);
+    border-radius: 4px;
+  }
+  
+  .xfaLayer .highlight.appended {
+    position: initial;
+  }
+  
+  .xfaLayer .highlight.begin {
+    border-radius: 4px 0 0 4px;
+  }
+  
+  .xfaLayer .highlight.end {
+    border-radius: 0 4px 4px 0;
+  }
+  
+  .xfaLayer .highlight.middle {
+    border-radius: 0;
+  }
+  
+  .xfaLayer .highlight.selected {
+    background-color: rgba(203, 223, 203, 1);
+  }
+  
+  .xfaPage {
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .xfaContentarea {
+    position: absolute;
+  }
+  
+  .xfaPrintOnly {
+    display: none;
+  }
+  
+  .xfaLayer {
+    position: absolute;
+    text-align: initial;
+    top: 0;
+    left: 0;
+    transform-origin: 0 0;
+    line-height: 1.2;
+  }
+  
+  .xfaLayer * {
+    color: inherit;
+    font: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    font-kerning: inherit;
+    letter-spacing: -0.01px;
+    text-align: inherit;
+    text-decoration: inherit;
+    box-sizing: border-box;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    pointer-events: auto;
+    line-height: inherit;
+  }
+  
+  .xfaLayer *:required {
+    outline: 1.5px solid red;
+  }
+  
+  .xfaLayer div {
+    pointer-events: none;
+  }
+  
+  .xfaLayer svg {
+    pointer-events: none;
+  }
+  
+  .xfaLayer svg * {
+    pointer-events: none;
+  }
+  
+  .xfaLayer a {
+    color: blue;
+  }
+  
+  .xfaRich li {
+    margin-left: 3em;
+  }
+  
+  .xfaFont {
+    color: black;
+    font-weight: normal;
+    font-kerning: none;
+    font-size: 10px;
+    font-style: normal;
+    letter-spacing: 0;
+    text-decoration: none;
+    vertical-align: 0;
+  }
+  
+  .xfaCaption {
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+  
+  .xfaCaptionForCheckButton {
+    overflow: hidden;
+    flex: 1 1 auto;
+  }
+  
+  .xfaLabel {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .xfaLeft {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .xfaRight {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+  }
+  
+  .xfaLeft > .xfaCaption,
+  .xfaLeft > .xfaCaptionForCheckButton,
+  .xfaRight > .xfaCaption,
+  .xfaRight > .xfaCaptionForCheckButton {
+    max-height: 100%;
+  }
+  
+  .xfaTop {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .xfaBottom {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+  
+  .xfaTop > .xfaCaption,
+  .xfaTop > .xfaCaptionForCheckButton,
+  .xfaBottom > .xfaCaption,
+  .xfaBottom > .xfaCaptionForCheckButton {
+    width: 100%;
+  }
+  
+  .xfaBorder {
+    background-color: transparent;
+    position: absolute;
+    pointer-events: none;
+  }
+  
+  .xfaWrapped {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .xfaTextfield:focus,
+  .xfaSelect:focus {
+    background-image: none;
+    background-color: transparent;
+    outline: var(--xfa-focus-outline);
+    outline-offset: -1px;
+  }
+  
+  .xfaCheckbox:focus,
+  .xfaRadio:focus {
+    outline: var(--xfa-focus-outline);
+  }
+  
+  .xfaTextfield,
+  .xfaSelect {
+    height: 100%;
+    width: 100%;
+    flex: 1 1 auto;
+    border: none;
+    resize: none;
+    background-image: var(--xfa-unfocused-field-background);
+  }
+  
+  .xfaSelect {
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-inline: 2px;
+  }
+  
+  .xfaTop > .xfaTextfield,
+  .xfaTop > .xfaSelect,
+  .xfaBottom > .xfaTextfield,
+  .xfaBottom > .xfaSelect {
+    flex: 0 1 auto;
+  }
+  
+  .xfaButton {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    border: none;
+    text-align: center;
+  }
+  
+  .xfaLink {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .xfaCheckbox,
+  .xfaRadio {
+    width: 100%;
+    height: 100%;
+    flex: 0 0 auto;
+    border: none;
+  }
+  
+  .xfaRich {
+    white-space: pre-wrap;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .xfaImage {
+    -o-object-position: left top;
+       object-position: left top;
+    -o-object-fit: contain;
+       object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .xfaLrTb,
+  .xfaRlTb,
+  .xfaTb {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .xfaLr {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  
+  .xfaRl {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch;
+  }
+  
+  .xfaTb > div {
+    justify-content: left;
+  }
+  
+  .xfaPosition {
+    position: relative;
+  }
+  
+  .xfaArea {
+    position: relative;
+  }
+  
+  .xfaValignMiddle {
+    display: flex;
+    align-items: center;
+  }
+  
+  .xfaTable {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .xfaTable .xfaRow {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  
+  .xfaTable .xfaRlRow {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch;
+    flex: 1;
+  }
+  
+  .xfaTable .xfaRlRow > div {
+    flex: 1;
+  }
+  
+  .xfaNonInteractive input,
+  .xfaNonInteractive textarea,
+  .xfaDisabled input,
+  .xfaDisabled textarea,
+  .xfaReadOnly input,
+  .xfaReadOnly textarea {
+    background: initial;
+  }
+  
+  @media print {
+    .xfaTextfield,
+    .xfaSelect {
+      background: transparent;
+    }
+  
+    .xfaSelect {
+      -webkit-appearance: none;
+         -moz-appearance: none;
+              appearance: none;
+      text-indent: 1px;
+      text-overflow: "";
+    }
+  }
+  
+  
+  :root {
+    --focus-outline: solid 2px blue;
+    --hover-outline: dashed 2px blue;
+    --freetext-line-height: 1.35;
+    --freetext-padding: 2px;
+    --editorFreeText-editing-cursor: text;
+    --editorInk-editing-cursor: pointer;
+  }
+  
+  @media (-webkit-min-device-pixel-ratio: 1.1), (min-resolution: 1.1dppx) {
+    :root {
+    }
+  }
+  
+  @media (forced-colors: active) {
+    :root {
+      --focus-outline: solid 3px ButtonText;
+      --hover-outline: dashed 3px ButtonText;
+    }
+  }
+  
+  [data-editor-rotation="90"] {
+    transform: rotate(90deg);
+  }
+  [data-editor-rotation="180"] {
+    transform: rotate(180deg);
+  }
+  [data-editor-rotation="270"] {
+    transform: rotate(270deg);
+  }
+  
+  .annotationEditorLayer {
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: calc(100px * var(--scale-factor));
+    transform-origin: 0 0;
+    cursor: auto;
+    z-index: 4;
+  }
+  
+  .annotationEditorLayer.freeTextEditing {
+    cursor: var(--editorFreeText-editing-cursor);
+  }
+  
+  .annotationEditorLayer.inkEditing {
+    cursor: var(--editorInk-editing-cursor);
+  }
+  
+  .annotationEditorLayer .selectedEditor {
+    outline: var(--focus-outline);
+    resize: none;
+  }
+  
+  .annotationEditorLayer .freeTextEditor {
+    position: absolute;
+    background: transparent;
+    border-radius: 3px;
+    padding: calc(var(--freetext-padding) * var(--scale-factor));
+    resize: none;
+    width: auto;
+    height: auto;
+    z-index: 1;
+    transform-origin: 0 0;
+    touch-action: none;
+    cursor: auto;
+  }
+  
+  .annotationEditorLayer .freeTextEditor .internal {
+    background: transparent;
+    border: none;
+    top: 0;
+    left: 0;
+    overflow: visible;
+    white-space: nowrap;
+    resize: none;
+    font: 10px sans-serif;
+    line-height: var(--freetext-line-height);
+  }
+  
+  .annotationEditorLayer .freeTextEditor .overlay {
+    position: absolute;
+    display: none;
+    background: transparent;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .annotationEditorLayer .freeTextEditor .overlay.enabled {
+    display: block;
+  }
+  
+  .annotationEditorLayer .freeTextEditor .internal:empty::before {
+    content: attr(default-content);
+    color: gray;
+  }
+  
+  .annotationEditorLayer .freeTextEditor .internal:focus {
+    outline: none;
+  }
+  
+  .annotationEditorLayer .inkEditor.disabled {
+    resize: none;
+  }
+  
+  .annotationEditorLayer .inkEditor.disabled.selectedEditor {
+    resize: horizontal;
+  }
+  
+  .annotationEditorLayer .freeTextEditor:hover:not(.selectedEditor),
+  .annotationEditorLayer .inkEditor:hover:not(.selectedEditor) {
+    outline: var(--hover-outline);
+  }
+  
+  .annotationEditorLayer .inkEditor {
+    position: absolute;
+    background: transparent;
+    border-radius: 3px;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transform-origin: 0 0;
+    cursor: auto;
+  }
+  
+  .annotationEditorLayer .inkEditor.editing {
+    resize: none;
+    cursor: inherit;
+  }
+  
+  .annotationEditorLayer .inkEditor .inkEditorCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+  }
+  
+  :root {
+    --viewer-container-height: 0;
+    --pdfViewer-padding-bottom: 0;
+    --page-margin: 1px auto -8px;
+    --page-border: 9px solid transparent;
+    --spreadHorizontalWrapped-margin-LR: -3.5px;
+  }
+  
+  @media screen and (forced-colors: active) {
+    :root {
+      --pdfViewer-padding-bottom: 9px;
+      --page-margin: 8px auto -1px;
+      --page-border: 1px solid CanvasText;
+      --page-border-image: none;
+      --spreadHorizontalWrapped-margin-LR: 3.5px;
+    }
+  }
+  
+  [data-main-rotation="90"] {
+    transform: rotate(90deg) translateY(-100%);
+  }
+  [data-main-rotation="180"] {
+    transform: rotate(180deg) translate(-100%, -100%);
+  }
+  [data-main-rotation="270"] {
+    transform: rotate(270deg) translateX(-100%);
+  }
+  
+  .pdfViewer {
+    background-color: #d7d7d7;
+    padding-bottom: var(--pdfViewer-padding-bottom);
+  }
+  
+  .pdfViewer .canvasWrapper {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
+  .pdfViewer .page {
+    direction: ltr;
+    width: 816px;
+    height: 1056px;
+    margin: var(--page-margin);
+    position: relative;
+    overflow: visible;
+    border: var(--page-border);
+    -o-border-image: var(--page-border-image);
+       border-image: var(--page-border-image);
+    background-clip: content-box;
+    background-color: rgba(255, 255, 255, 1);
+  }
+  
+  .pdfViewer .dummyPage {
+    position: relative;
+    width: 0;
+    height: var(--viewer-container-height);
+  }
+  
+  .pdfViewer.removePageBorders .page {
+    margin: 0 auto 10px;
+    border: none;
+  }
+  
+  .pdfViewer.singlePageView {
+    display: inline-block;
+  }
+  
+  .pdfViewer.singlePageView .page {
+    margin: 0;
+    border: none;
+  }
+  
+  .pdfViewer.scrollHorizontal,
+  .pdfViewer.scrollWrapped,
+  .spread {
+    margin-left: 3.5px;
+    margin-right: 3.5px;
+    text-align: center;
+  }
+  
+  .pdfViewer.scrollHorizontal,
+  .spread {
+    white-space: nowrap;
+  }
+  
+  .pdfViewer.removePageBorders,
+  .pdfViewer.scrollHorizontal .spread,
+  .pdfViewer.scrollWrapped .spread {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .spread .page,
+  .spread .dummyPage,
+  .pdfViewer.scrollHorizontal .page,
+  .pdfViewer.scrollWrapped .page,
+  .pdfViewer.scrollHorizontal .spread,
+  .pdfViewer.scrollWrapped .spread {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  .spread .page,
+  .pdfViewer.scrollHorizontal .page,
+  .pdfViewer.scrollWrapped .page {
+    margin-left: var(--spreadHorizontalWrapped-margin-LR);
+    margin-right: var(--spreadHorizontalWrapped-margin-LR);
+  }
+  
+  .pdfViewer.removePageBorders .spread .page,
+  .pdfViewer.removePageBorders.scrollHorizontal .page,
+  .pdfViewer.removePageBorders.scrollWrapped .page {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  
+  .pdfViewer .page canvas {
+    margin: 0;
+    display: block;
+  }
+  
+  .pdfViewer .page canvas[hidden] {
+    display: none;
+  }
+  
+  .pdfViewer .page canvas[zooming] {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .pdfViewer .page .loadingIcon {
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+  }
+  .pdfViewer .page .loadingIcon.notVisible {
+    background: none;
+  }
+  
+  .pdfViewer.enablePermissions .textLayer span {
+    -webkit-user-select: none !important;
+       -moz-user-select: none !important;
+            user-select: none !important;
+    cursor: not-allowed;
+  }
+  
+  .pdfPresentationMode .pdfViewer {
+    padding-bottom: 0;
+  }
+  
+  .pdfPresentationMode .spread {
+    margin: 0;
+  }
+  
+  .pdfPresentationMode .pdfViewer .page {
+    margin: 0 auto;
+    border: 2px solid transparent;
+  }
+  </style>
+                </head>
 
-  {% seo %}
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style"
-    type="text/css" crossorigin>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#157878">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-  {% include head-custom.html %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-</head>
-
-<body>
-  <a id="skip-to-content" href="#content">Skip to the content.</a>
-
-  <header class="page-header" role="banner">
-    <!-- <h1 class="project-name">{{ page.title | default: site.title | default: site.github.repository_name }}</h1> -->
-    <h1 class="project-name">Mo'men Mamdouh</h1>
-    <h2 class="project-tagline"> Software Engineer | Full Stack ASP.NET & Angular </h2>
-    <!-- <a href="https://drive.google.com/file/d/1iG-wspieCP2k9xRagLl6l7uiQBzxa2XY/view?usp=sharing"
-      style="color: white; text-decoration: underline;">Download PDF</a> -->
-    <!-- <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2> -->
-    <!-- {% if site.github.is_project_page %}
-        <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
-      {% endif %} -->
-  </header>
-
-  <main id="content" class="main-content" role="main">
-    {{ content }}
-
-    <!-- <footer class="site-footer">
-        {% if site.github.is_project_page %}
-          <span class="site-footer-owner"><a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>.</span>
-        {% endif %}
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
-      </footer> -->
-  </main>
-</body>
-
-</html>
+                <body>
+                    <div class="pdfViewer" ="true" style="--scale-factor: 0.8999999761581421;"><div class="page" style="height: 757.728px; width: 535.464px;"><div class="canvasLayer"><img src="data:image/png;base64,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"></div><div data-main-rotation="0" class="textLayer" style="width: calc(var(--scale-factor) * 594.95996px); height: calc(var(--scale-factor) * 841.91998px);"><span role="presentation" dir="ltr" style="left: 9.53%; top: 5.05%; font-size: calc(var(--scale-factor)*25.00px); font-family: sans-serif; transform: scaleX(0.983122);">Mo'men Mamdouh</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 9.12%; font-size: calc(var(--scale-factor)*18.87px); font-family: sans-serif; transform: scaleX(0.812578);">Software Engineer</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 12.67%; top: 13.23%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.886582);">momenmamdouh982@gmail.com</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 12.67%; top: 15.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.953047);">+201021316155</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 12.67%; top: 18.31%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.906127);">Cairo, Egypt</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 54.93%; top: 13.23%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.939513);">LinkedIn</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 54.93%; top: 15.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.949048);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">GitHub</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 22.13%; font-size: calc(var(--scale-factor)*11.50px); font-family: sans-serif; transform: scaleX(1.0977);">Profile</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 24.99%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.892628);">Full stack developer with 3 years of experience in .NET Core, APIs, and databases, and 1.5 years of experience in</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 26.6%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.906933);">Angular and front-end development. Strong problem-solving skills, and a passion for building efficient and scalable</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 28.2%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.904287);">applications. Proven ability to manage full software development lifecycle, from designing to deploying, and</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 29.8%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.908283);">collaborate effectively with cross-functional teams. Eager to contribute to innovative projects.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 33.09%; font-size: calc(var(--scale-factor)*11.50px); font-family: sans-serif; transform: scaleX(1.02702);">Education</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 35.86%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.955008);">Bachelor</span><span role="presentation" dir="ltr" style="left: 34.8%; top: 35.86%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 35.32%; top: 35.86%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.0378);">of</span><span role="presentation" dir="ltr" style="left: 36.85%; top: 35.86%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 37.36%; top: 35.86%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.991554);">Computer</span><span role="presentation" dir="ltr" style="left: 45.04%; top: 35.86%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 45.56%; top: 35.86%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.889598);">Science</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 37.46%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.83468);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Helwan</font></font></span><span role="presentation" dir="ltr" style="left: 33.07%; top: 37.46%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 33.58%; top: 37.46%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.86276);">University</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 40.01%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;">•</span><span role="presentation" dir="ltr" style="left: 29.74%; top: 39.07%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.899229);">Specialization: Computer Science as a Major and Information Systems as a Minor.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 41.62%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 40.67%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.904605);">Graduation Project: [AI in Justice] A Legal multiple-choice question answering system.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 43.96%; font-size: calc(var(--scale-factor)*11.50px); font-family: sans-serif; transform: scaleX(1.02432);">Professional Experience</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 46.73%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.965267);">Software</span><span role="presentation" dir="ltr" style="left: 34.88%; top: 46.73%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 35.39%; top: 46.73%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.964858);">Engineer</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 48.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.781181);">Rosenfield</span><span role="presentation" dir="ltr" style="left: 34.67%; top: 48.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 35.18%; top: 48.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.83491);">Health</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 50.88%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 49.93%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.906099);">Backend development using .NET with modular architecture, Clean Architecture,</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 51.54%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.862756);">Dapper, and Postgres.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 54.09%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 53.14%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.90034);">Implemented CQRS, repository pattern, MediatR, chain of responsibilities, strategy,</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 54.74%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.898705);">and factory patterns.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 57.3%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 56.35%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.898965);">Managed logging with Nlog, and used background services with parallel processing</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 57.95%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.899963);">and TPL Dataflows.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 60.5%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 59.56%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.890726);">Frontend development using Angular, NgRx, RxJs, and NX to manage state and</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 61.16%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.899346);">improve performance.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 63.71%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 62.76%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.907052);">Worked on the admin area with .NET and Angular, focusing on background services</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 64.37%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.888664);">and parallel processing with SemaphoreSlim.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 66.92%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 65.97%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.912336);">Implemented changes to DICOM files for anonymization, including header</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 67.57%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.90999);">modification and movement.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 70.12%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 69.18%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.887126);">Used Dapper and Postgres for database management and logging with Nlog.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 71.73%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 70.78%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.910089);">Contributed to both user and admin areas using .NET and Angular.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 73.33%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 72.38%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.891115);">Focused on scheduling and handling meetings using a scheduler view, supporting</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 73.99%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.859394);">repeated meetings.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 76.54%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 75.59%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.905538);">Managed real-time communication with SignalR and used Postgres with Dapper for</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 77.19%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.84181);">database management.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 79.74%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 78.8%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.905198);">Applied Nlog for comprehensive logging of events.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 81.47%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.944398);">Back-End</span><span role="presentation" dir="ltr" style="left: 35.38%; top: 81.47%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 35.9%; top: 81.47%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.942762);">.Net</span><span role="presentation" dir="ltr" style="left: 38.94%; top: 81.47%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 39.46%; top: 81.47%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.959951);">Developer</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 83.07%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.77604);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Romeya</font></font></span><span role="presentation" dir="ltr" style="left: 33.25%; top: 83.07%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 33.77%; top: 83.07%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.776661);">Agency</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 85.62%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 84.68%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.900285);">Backend development using Entity Framework.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 87.23%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 86.28%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.893295);">Developed features for managing engineering project reports and file management.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 88.83%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 87.88%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.900496);">Backend development focused on integrating with various systems using Entity</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 89.49%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.90176);">Framework.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 92.04%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">•</font></font></span><span role="presentation" dir="ltr" style="left: 29.74%; top: 91.09%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.904719);">Handled complex data operations to support equipment and machinery rental</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 92.69%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.82957);">services.</span><span role="presentation" dir="ltr" style="left: 9.53%; top: 35.86%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.984353);">09/2019 – 06/2023</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 37.46%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.901752);">Cairo,</span><span role="presentation" dir="ltr" style="left: 13.77%; top: 37.46%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.29%; top: 37.46%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.894885);">Egypt</span><span role="presentation" dir="ltr" style="left: 9.53%; top: 46.73%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.938031);">12/2023 – present</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 48.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.901752);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cairo,</font></font></span><span role="presentation" dir="ltr" style="left: 13.77%; top: 48.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.29%; top: 48.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.894885);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Egypt</font></font></span><span role="presentation" dir="ltr" style="left: 9.53%; top: 81.47%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.984353);">06/2023 – 03/2024</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 83.07%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.898575);">Qatar</span></div></div><div class="page" style="height: 757.728px; width: 535.464px;"><div class="canvasLayer"><img src="data:image/png;base64,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"></div><div data-main-rotation="0" class="textLayer" style="width: calc(var(--scale-factor) * 594.95996px); height: calc(var(--scale-factor) * 841.91998px);"><span role="presentation" dir="ltr" style="left: 28.16%; top: 5.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.988582);">Full-stack</span><span role="presentation" dir="ltr" style="left: 35.62%; top: 5.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 36.13%; top: 5.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.959951);">Developer</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 6.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.792159);">Project</span><span role="presentation" dir="ltr" style="left: 32.5%; top: 6.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 33.02%; top: 6.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.82347);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ONE</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 9.37%; font-size: calc(var(--scale-factor)*0.75px); font-family: sans-serif;">•</span><span role="presentation" dir="ltr" style="left: 29.74%; top: 8.42%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.890881);">Backend development with Entity Framework for managing user data, course access,</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 29.74%; top: 10.03%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.889114);">and video streaming.</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 13.31%; font-size: calc(var(--scale-factor)*11.50px); font-family: sans-serif; transform: scaleX(1.00798);">Projects</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 16.17%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.940157);">iCode</span><span role="presentation" dir="ltr" style="left: 13.86%; top: 16.17%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.38%; top: 16.17%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.973652);">Teching</span><span role="presentation" dir="ltr" style="left: 20.3%; top: 16.17%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 20.81%; top: 16.17%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.933134);">Files</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 17.78%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.830918);">.Net</span><span role="presentation" dir="ltr" style="left: 12.22%; top: 17.78%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 12.73%; top: 17.78%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.798629);">Core</span><span role="presentation" dir="ltr" style="left: 15.79%; top: 17.78%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 16.3%; top: 17.78%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;">&amp;</span><span role="presentation" dir="ltr" style="left: 17.65%; top: 17.78%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 18.16%; top: 17.78%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.859275);">Angular</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 20.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.06406);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Price</font></font></span><span role="presentation" dir="ltr" style="left: 13.07%; top: 20.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 13.59%; top: 20.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;">-</span><span role="presentation" dir="ltr" style="left: 14.23%; top: 20.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.75%; top: 20.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.04054);">Bulk</span><span role="presentation" dir="ltr" style="left: 18.32%; top: 20.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 18.84%; top: 20.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.00509);">DICOM</span><span role="presentation" dir="ltr" style="left: 24.75%; top: 20.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 25.26%; top: 20.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.00233);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Anonymize</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 22.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.830918);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.Net</font></font></span><span role="presentation" dir="ltr" style="left: 12.22%; top: 22.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 12.73%; top: 22.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.798629);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Core</font></font></span><span role="presentation" dir="ltr" style="left: 15.79%; top: 22.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 16.3%; top: 22.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&amp;</font></font></span><span role="presentation" dir="ltr" style="left: 17.65%; top: 22.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 18.16%; top: 22.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.859275);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Angular</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 24.72%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.940157);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">iCode</font></font></span><span role="presentation" dir="ltr" style="left: 13.86%; top: 24.72%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.38%; top: 24.72%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.03569);">MDT</span><span role="presentation" dir="ltr" style="left: 18.33%; top: 24.72%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 18.85%; top: 24.72%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.06245);">(Tumor</span><span role="presentation" dir="ltr" style="left: 24.82%; top: 24.72%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 25.33%; top: 24.72%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.0011);">Board)</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 26.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.830918);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.Net</font></font></span><span role="presentation" dir="ltr" style="left: 12.22%; top: 26.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 12.73%; top: 26.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.798629);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Core</font></font></span><span role="presentation" dir="ltr" style="left: 15.79%; top: 26.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 16.3%; top: 26.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">&amp;</font></font></span><span role="presentation" dir="ltr" style="left: 17.65%; top: 26.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 18.16%; top: 26.33%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.859275);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Angular</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.07389);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Nation</font></font></span><span role="presentation" dir="ltr" style="left: 13.53%; top: 29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.04%; top: 29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.993364);">Consulting</span><span role="presentation" dir="ltr" style="left: 22.32%; top: 29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 22.84%; top: 29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.989842);">Architects</span><span role="presentation" dir="ltr" style="left: 30.5%; top: 29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 31.02%; top: 29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.01148);">Office</span><span role="presentation" dir="ltr" style="left: 35.64%; top: 29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 36.16%; top: 29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.912356);">System</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 30.6%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.830918);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.Net</font></font></span><span role="presentation" dir="ltr" style="left: 12.22%; top: 30.6%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 12.73%; top: 30.6%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.798629);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Core</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 33.28%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.947093);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">HOW MUCH</font></font></span><span role="presentation" dir="ltr" style="left: 12.87%; top: 33.28%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 13.39%; top: 33.28%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.953925);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">E-Commerce</font></font></span><span role="presentation" dir="ltr" style="left: 23.3%; top: 33.28%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 23.81%; top: 33.28%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.912356);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">System</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 34.88%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.830918);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.Net</font></font></span><span role="presentation" dir="ltr" style="left: 12.22%; top: 34.88%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 12.73%; top: 34.88%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.798629);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Core</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 37.55%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.869085);">APS</span><span role="presentation" dir="ltr" style="left: 12.59%; top: 37.55%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 13.11%; top: 37.55%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.969554);">Educational</span><span role="presentation" dir="ltr" style="left: 22.05%; top: 37.55%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 22.56%; top: 37.55%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.912356);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">System</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 39.16%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.830918);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.Net</font></font></span><span role="presentation" dir="ltr" style="left: 12.22%; top: 39.16%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 12.73%; top: 39.16%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.798629);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Core</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 42.44%; font-size: calc(var(--scale-factor)*11.50px); font-family: sans-serif; transform: scaleX(1.09049);">Skills</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 45.21%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.888336);">Languages</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 46.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.906648);">C/C++, SQL (PostgreSQL, MS SQL), TypeScript, C#</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 49.85%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.982007);">Architecture &amp; Design Patterns</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 51.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.906032);">Modular Architecture, Clean Architecture, CQRS,</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 53.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.895994);">SOLID Principles, OOP, Design Patterns</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 55.99%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.965075);">DevOps &amp; Tools</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 57.6%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.894957);">IIS, Git, Docker, Azure DevOps, Postman</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 60.62%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(1.01853);">Other Skills</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 62.23%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.917967);">Agile Methodology, Adobe Photoshop &amp; Illustrator</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 51.79%; top: 45.21%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.997541);">Frameworks &amp; Libraries</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 51.79%; top: 46.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.910225);">.Net Core, Entity Framework Core, Angular.js, NgRx,</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 51.79%; top: 48.42%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.891327);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">RxJs, NX, SignalR, TPL Dataflows, Nlog</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 51.79%; top: 51.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.934668);">Databases &amp; Data Management</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 51.79%; top: 53.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.916644);">PostgreSQL, MS SQL, Dapper (ORM), Entity</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 51.79%; top: 54.66%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.912591);">Framework Core</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 51.79%; top: 57.6%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.9494);">Web &amp; Server Technologies</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 51.79%; top: 59.2%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.902007);">Deployment on Azure, Smarter, Hostinger, GoDaddy,</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 51.79%; top: 60.8%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.916018);">SignalR for real-time communication</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 65.52%; font-size: calc(var(--scale-factor)*11.50px); font-family: sans-serif; transform: scaleX(0.940744);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Languages</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 11.11%; top: 68.29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.906518);">Arabic</span><span role="presentation" dir="ltr" style="left: 15.65%; top: 68.29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 53.38%; top: 68.29%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.891434);">English</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 71.57%; font-size: calc(var(--scale-factor)*11.50px); font-family: sans-serif; transform: scaleX(1.10683);">Volunterring</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 74.34%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.957132);">180</span><span role="presentation" dir="ltr" style="left: 30.97%; top: 74.34%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 31.49%; top: 74.34%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.92194);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Girl</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 75.95%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.895241);">Charity</span><span role="presentation" dir="ltr" style="left: 33.16%; top: 75.95%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 33.67%; top: 75.95%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.827601);">Advisor</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 78.62%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.957132);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">180</font></font></span><span role="presentation" dir="ltr" style="left: 30.97%; top: 78.62%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 31.49%; top: 78.62%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.918584);">Darage</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 80.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.895241);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Charity</font></font></span><span role="presentation" dir="ltr" style="left: 33.16%; top: 80.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 33.67%; top: 80.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.844497);">Coordinator</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 82.89%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.957132);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">180</font></font></span><span role="presentation" dir="ltr" style="left: 30.97%; top: 82.89%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 31.49%; top: 82.89%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.918584);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Darage</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 84.5%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.800054);">Vice</span><span role="presentation" dir="ltr" style="left: 30.88%; top: 84.5%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 31.39%; top: 84.5%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.784673);">President</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 87.17%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.957132);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">180</font></font></span><span role="presentation" dir="ltr" style="left: 30.97%; top: 87.17%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 31.49%; top: 87.17%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.92194);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Girl</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.84414);">Graphic</span><span role="presentation" dir="ltr" style="left: 33.37%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 33.89%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.796214);">Design</span><span role="presentation" dir="ltr" style="left: 38.26%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 38.77%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.800054);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Vice</font></font></span><span role="presentation" dir="ltr" style="left: 41.49%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 42.01%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.788539);">Head</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 91.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.957132);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">180</font></font></span><span role="presentation" dir="ltr" style="left: 30.97%; top: 91.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 31.49%; top: 91.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.918584);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Darage</font></font></span><br role="presentation"><span role="presentation" dir="ltr" style="left: 28.16%; top: 93.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.84414);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Graphic</font></font></span><span role="presentation" dir="ltr" style="left: 33.37%; top: 93.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 33.89%; top: 93.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.796214);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Design</font></font></span><span role="presentation" dir="ltr" style="left: 38.26%; top: 93.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 38.77%; top: 93.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.811385);">Member</span><span role="presentation" dir="ltr" style="left: 9.53%; top: 5.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.984353);">10/2022 – 07/2023</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 6.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.865121);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Human,</font></font></span><span role="presentation" dir="ltr" style="left: 13.09%; top: 6.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 13.61%; top: 6.82%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.894885);">Egypt</span><span role="presentation" dir="ltr" style="left: 9.53%; top: 74.34%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.984353);">01/2024 – 12/2024</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 75.95%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.901752);">Cairo,</span><span role="presentation" dir="ltr" style="left: 13.77%; top: 75.95%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.29%; top: 75.95%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.894885);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Egypt</font></font></span><span role="presentation" dir="ltr" style="left: 9.53%; top: 78.62%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.984353);">12/2022 – 12/2023</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 80.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.901752);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cairo,</font></font></span><span role="presentation" dir="ltr" style="left: 13.77%; top: 80.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.29%; top: 80.22%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.894885);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Egypt</font></font></span><span role="presentation" dir="ltr" style="left: 9.53%; top: 82.89%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.984353);">12/2021 – 12/2022</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 84.5%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.901752);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cairo,</font></font></span><span role="presentation" dir="ltr" style="left: 13.77%; top: 84.5%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.29%; top: 84.5%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.894885);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Egypt</font></font></span><span role="presentation" dir="ltr" style="left: 9.53%; top: 87.17%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.99319);">11/2020 – 12/2021</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.901752);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cairo,</font></font></span><span role="presentation" dir="ltr" style="left: 13.77%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.29%; top: 88.77%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.894885);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Egypt</font></font></span><span role="presentation" dir="ltr" style="left: 9.53%; top: 91.45%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.99319);">12/2019 – 11/2020</span><br role="presentation"><span role="presentation" dir="ltr" style="left: 9.53%; top: 93.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.901752);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Cairo,</font></font></span><span role="presentation" dir="ltr" style="left: 13.77%; top: 93.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif;"> </span><span role="presentation" dir="ltr" style="left: 14.29%; top: 93.05%; font-size: calc(var(--scale-factor)*10.50px); font-family: sans-serif; transform: scaleX(0.894885);"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Egypt</font></font></span></div></div></div>
+                </body>
+            </html>
+        
